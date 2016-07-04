@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="jquery.js" type="text/javascript">
+    </script>
+    <script src="blackjack_sr.js" type="text/javascript">
+    </script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+     <link rel="stylesheet" href="http://s.mlcdn.co/animate.css">
+    <title>Black Jack</title>
+  </head>
+  <style media="screen">
+    .container{
+0px;
+      width: 90%;
+      border: 10px solid maroon;
+      margin-top: 20px, 20px, 20px, 20px;
+      background-color: #51E840;
+      border-radius: 40px;
+      margin-top: 20px;
+
+    }
+
+    h1{
+      text-align: center;
+      font-size: 50px;
+      font-family: Arial;
+      color: maroon;
+
+    }
+    .div1{
+      height: 150px;
+      width: inherit;
+      border-radius: 10px;
+      margin: auto;
+      margin-bottom: 30px;
+      background-color: lightgreen;
+    }
+    .div2{
+      position: center;
+      height: 150px;
+      width: inherit;
+      border-radius: 10px;
+      margin: auto;
+      background-color: lightgreen;
+    }
+    .buttons{
+        font-size: 1.5em;
+        padding: 0.5em 1em;
+        background: linear-gradient(to bottom,  white 0%,lightgreen 41%,cyan 100%);
+        border: 2px solid #49a5bf;
+        border-radius: 5px;
+        transition: 0.25s;
+        color: maroon;
+        text-shadow: 0 1px 1px black;
+        margin: 15px;
+        width: 150px;
+      }
+      label{
+        font-size: 30px;
+        color: maroon;
+        font-family: Arial;
+      }
+    .card {
+      float: left;
+      background: white;
+      border-radius: 5px;
+      border: 1px solid black;
+      width: 80px;
+      height: 100px;
+      margin: 25px 15px ;
+      font-size: 0.8em;
+
+    }
+    #messages{
+      text-align: center;
+      font-size: 30px;
+      font-family: fantasy;
+      color: Brown;
+    }
+  </style>
+  <body>
+    <div class="container">
+
+      <h1>BlackJack</h1>
+      <div id="messages">Let's play...
+
+      </div>
+      <div class="">
+        <label for="">Dealer Hand:</label>
+        <label id="dealer-points" class="points"></label>
+        <div class="div1" id ="dealer-hand">
+
+        </div>
+        <label for="">Player Hand:</label>
+        <label id="player-points" class="points"></label>
+        <div class="div2" id= "player-hand" >
+        </div>
+      </div>
+      <div>
+        <div class="row">
+          <div class="col-sm-3">
+          </div>
+          <div class="col-sm-6">
+            <div class="col-sm-4">
+              <button id="deal-button" class="buttons" type="button" name="button">Deal</button>
+            </div>
+            <div class="col-sm-4">
+              <button id="hit-button" class="buttons" type="button" name="button">Hit</button>
+            </div>
+            <div class="col-sm-4">
+              <button id="stand-button" class="buttons" type="button" name="button">Stand</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<!--
+var deck = shuffle(newDeck());
+var dealerHand = [];
+var playerHand = [];
+
+function newDeck(){
+  var deck = [];
+  for (var i = 1; i <=13; i++) {
+    deck.push({point:i, suit: "spades"});
+    deck.push({point:i, suit: "hearts"});
+    deck.push({point:i, suit: "clubs"});
+    deck.push({point:i, suit: "diamonds"});
+  }
+}
+function shuffle(deck) {
+  var newDeck = [];
+  while (deck.length > 0) {
+    var idx = Math.floor(Math.random() * deck.length);
+    var card = deck[idx];
+    newDeck.push(card);
+    deck.splice(idx, 1);
+  }
+  return newDeck;
+}
+
+function dealCard(hand, elementID){
+  var card;
+  hand.push(card);
+  //card = deck.pop();
+  // var idx = Math.floor(Math.random()*deck.length);
+  // var card = deck[idx];
+  // console.log("Before splice");
+  // deck.splice(idx,1);
+  // console.log("After splice");
+
+  var url= getCardImageUrl(card);
+  var cardHTML = '<img class="card" src="' + url + '"/>';
+  $( elementID).append(cardHTML);
+}
+
+function calculatePoints(hand){
+  hand = hand.slice(0);
+  function compare(card1, card2){
+    return card2.point - card1.point;
+  }
+  hand.sort(compare)
+  var sum = 0;
+  for (var i = 0; i < hand.length; i++) {
+    var card = hand[i];
+    if(card.point>10){
+      sum += 10;
+    }
+    else if (car.point===1) {
+      if (sum+11 < 21) {
+        sum += 11;
+      }
+      else {
+        sum = sum + 1;
+      }
+    }
+  }
+  return sum;
+}
+
+function displayPoints(){
+  var dealerPoints = calculatePoints(dealerHand);
+  $("#dealer-points").text(dealerPoints);
+  var playerPoints = calculatePoints(playerHand);
+  $("#player-points").text(playerPoints);
+}
+
+function checkForBusts() {
+  var playerPoints= calculatePoints(playerHand);
+  if (playerPoints > 21){
+    $("#messages").text("You got busted. Better luck next time.")
+    return true;
+  }
+  var dealerPoints = calculatePoints(dealerHand);
+  if(dealerPoints>21){
+    $("#messages").text("Dealer busted. You win.")
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+function resetGame(){
+  deck = shuffle(newDeck());
+  var dealerHand = [];
+  var playerHand = [];
+  $("#dealer-points").text("");
+  $("#player-points").text("");
+  $("#messages").text("");
+  $("#player-hand").html("");
+  $("#dealer-hand").html("");
+}
+
+function getCardImageUrl(card){
+  var cardName = ""
+  if(card.point===1) {
+    cardName ="ace";
+  }
+  else if (card.point===11) {
+    cardName = "jack";
+  }
+  else if (card.point===12) {
+    cardName = "queen";
+  }
+  else if (card.point===13) {
+    cardName = "king";
+  }
+  else{
+    cardName = card.point;
+  }
+  console.log(cardName);
+  return "images/" +  cardName + "_of_" + card.suit +".png";
+}
+
+$ (function (){
+  $("#deal-button").click(function(){
+    resetGame();
+    dealCard(playerHand, "#player-hand");
+    dealCard(dealerHand, "#dealer-hand");
+    dealCard(playerHand, "#player-hand");
+    dealCard(dealerHand, "#dealer-hand");
+    displayPoints();
+    checkForBusts();
+  });
+
+  $("#hit-button").click(function(){
+    dealCard(playerHand,"#player-hand");
+    displayPoints();
+    checkForBusts();
+  });
+  $("#stand-button").click(function(){
+    var dealerPoints = calculatePoints(dealerHand);
+    while (dealerPoints < 17){
+      dealCard(dealerHand, "#dealer-hand");
+      dealerPoints = calculatePoints(dealerHand)
+      displayPoints();
+      if (!checkForBusts()){
+        var playerPoints = calculatePoints(playerHand);
+        var dealerPoints = calculatePoints(dealerHand);
+        if(playerPoints>dealerPoints){
+          $("#messages").text("You win.");
+        }
+        else if (playerPoints = dealerPoints) {
+          $("#messages").text("Push");
+        }
+        else{
+          $("#messages").text("You loose.")
+        }
+      }
+    }
+  });
+}); -->
